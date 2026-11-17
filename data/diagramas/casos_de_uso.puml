@@ -1,0 +1,102 @@
+@startuml Concessionaria-de-carro
+!theme crt-green
+skinparam actorStyle awesome
+left to right direction
+skinparam packageStyle rectangle
+
+
+' Atores
+:Visitante: as Visitante
+:Comprador: as Comprador
+:Vendedor: as Vendedor
+:Administrador: as Admin
+
+' Herança
+Visitante <|-- Comprador
+Visitante <|-- Vendedor
+
+rectangle "Plataforma de E-commerce de Veículos" {
+
+  package "1. Módulo de Acesso e Usuários" {
+    usecase "UC01 - Cadastrar usuário" as UC01
+    usecase "UC02 - Realizar autenticação" as UC02
+    usecase "UC03 - Recuperar senha" as UC03
+    usecase "UC04 - Visualizar perfil" as UC04
+    usecase "UC05 - Editar dados pessoais" as UC05
+  }
+
+  package "2. Módulo de Consulta de Veículos" {
+    usecase "UC06 - Visualizar catálogo de veículos" as UC06
+    usecase "UC07 - Visualizar catálogo de marcas" as UC07
+    usecase "UC08 - Visualizar catálogo de lojas oficiais" as UC08
+    usecase "UC09 - Pesquisar veículo por palavra-chave" as UC09
+    usecase "UC10 - Filtrar veículos" as UC10
+    usecase "UC11 - Visualizar detalhes de um veículo" as UC11
+    usecase "UC12 - Visualizar galeria de imagens" as UC12
+  }
+
+  package "3. Módulo de Anúncios e Vendas" {
+    usecase "UC13 - Cadastrar anúncio de veículo" as UC13
+    usecase "UC14 - Editar anúncio de veículo" as UC14
+    usecase "UC15 - Consultar anúncios publicados" as UC15
+    usecase "UC16 - Pausar e reativar anúncio" as UC16
+    usecase "UC17 - Entrar em contato com vendedor" as UC17
+  }
+
+  package "4. Módulo Administrativo" {
+    usecase "UC18 - Visualizar painel administrativo" as UC18
+    usecase "UC19 - Consultar usuários cadastrados" as UC19
+    usecase "UC20 - Consultar anúncios de todos usuários" as UC20
+    usecase "UC21 - Aprovar ou rejeitar anúncio" as UC21
+    usecase "UC22 - Remover anúncio irregular" as UC22
+    usecase "UC23 - Consultar denúncias de anúncios" as UC23
+  }
+}
+
+' Associação de Visitante
+Visitante --> UC01
+Visitante --> UC02
+Visitante --> UC03
+Visitante --> UC06
+Visitante --> UC07
+Visitante --> UC08
+Visitante --> UC11
+
+' Associações de Usuarios Autenticados
+Comprador --> UC04
+Comprador --> UC05
+Comprador --> UC17
+
+Vendedor --> UC04
+Vendedor --> UC05
+Vendedor --> UC13
+Vendedor --> UC14
+Vendedor --> UC15
+Vendedor --> UC16
+
+'   Associações do Admin
+Admin --> UC02
+Admin --> UC18
+Admin --> UC19
+Admin --> UC20
+Admin --> UC21
+Admin --> UC22
+Admin --> UC23
+
+'   Relacionamentos entre casos de uso
+' -Extensões na consulta e catálogo
+UC09 ..> UC06 : <<extend>>
+UC10 ..> UC06 : <<extend>>
+UC12 ..> UC11 : <<extend>>
+
+' -Autenticação
+UC04 ..> UC02 : <<include>>
+UC05 ..> UC02 : <<include>>
+UC13 ..> UC02 : <<include>>
+UC14 ..> UC02 : <<include>>
+UC15 ..> UC02 : <<include>>
+UC16 ..> UC02 : <<include>>
+UC17 ..> UC02 : <<include>>
+UC18 ..> UC02 : <<include>>
+
+@enduml
